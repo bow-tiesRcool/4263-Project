@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 
 public class SpawnController : MonoBehaviour
@@ -25,7 +24,7 @@ public class SpawnController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Player.isMoving)
+        if (Player.state == PlayerController.State.Moving)
         {
             spawnTime -= Time.deltaTime;
             
@@ -41,12 +40,9 @@ public class SpawnController : MonoBehaviour
     {
         if(Random.Range(1,100) <= spawnChancePercent)
         {
-            Player.isMoving = false;
-            Player.isFighting= true;
-            Player.isChangePos = true;
+            Player.state = PlayerController.State.ChangePos;
             Player.PositionChangeUI.SetActive(true);
-            Enemy.newSpawn( new Vector2(pos.x + spawnDistance, pos.y));
-            Instantiate(Player.TBFC);
+            Enemy.newSpawn( new Vector2(pos.x + spawnDistance, pos.y), Player.currentLevel);
         }
     }
 }

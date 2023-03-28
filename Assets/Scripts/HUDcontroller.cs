@@ -24,8 +24,9 @@ public class HUDcontroller : MonoBehaviour
         Player.order.Add(Player.bat);
         Player.order.Add(Player.hammer);
         Player.ChangePosition();
-        Player.isChangePos = false;
+        Player.state = PlayerController.State.Fighting;
         Player.PositionChangeUI.SetActive(false);
+        Player.TBFC.NewTBFC();
     }
 
     public void HSB()
@@ -35,7 +36,8 @@ public class HUDcontroller : MonoBehaviour
         Player.order.Add(Player.sword);
         Player.order.Add(Player.bat);
         Player.ChangePosition();
-        Player.isChangePos = false;
+        Player.state = PlayerController.State.Fighting;
         Player.PositionChangeUI.SetActive(false);
+        Player.TBFC.NewTBFC();
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemySetController : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class EnemySetController : MonoBehaviour
     public int spawnAmountMax;
 
     public GameObject EnemySet;
-    public GameObject[] currentEnemyList;
+    public List<GameObject> currentEnemyList;
     private int spawnCount;
 
 
@@ -25,21 +26,17 @@ public class EnemySetController : MonoBehaviour
         
     }
 
-    public void newSpawn(Vector2 pos)
+    public void newSpawn(Vector2 pos, int currentLevel)
     {
         EnemySet.transform.position = pos;
-        spawnCount = Random.Range(spawnAmountMin, spawnAmountMax);
-        currentEnemyList = new GameObject[spawnCount];
-        CreateEnemy();
-    }
-
-    void CreateEnemy()
-    {
+        spawnCount = Random.Range(spawnAmountMin, spawnAmountMax + 1);
+        currentEnemyList.Clear();
         for (int i = 0; i < spawnCount; i++)
         {
-            currentEnemyList[i] = Instantiate(enemyList[Random.Range(0,enemyList.Length)]);
+            currentEnemyList.Add(Instantiate(enemyList[Random.Range(0, enemyList.Length)]));
             currentEnemyList[i].transform.parent = EnemySet.transform;
             currentEnemyList[i].transform.localPosition = new Vector2(i * 1.5f, 0);
+            currentEnemyList[i].GetComponent<EnemyBattleController>().SetLevel(currentLevel);
         }
     }
 }
