@@ -16,6 +16,8 @@ public class TBFController : MonoBehaviour
     public BattleObject mainGirl;
     private BattleObject currentGirl;
     public EnemyBattleController selectedEnemy;
+    public EventTrigger trigger;
+    public EventTriggerType eventType;
 
     public int totalObjects;
     public int turns;
@@ -59,6 +61,7 @@ public class TBFController : MonoBehaviour
         enemyTeamSpeed = GetTeamSpeed(Enemy.currentEnemyList, false);
         totalObjects = 3 + Enemy.currentEnemyList.Count;
         turns = totalObjects;
+        SetTrigger();
         CreateOrder();
         GetMainGirl();
     }
@@ -232,5 +235,18 @@ public class TBFController : MonoBehaviour
     public void SelectEnemy(GameObject enemy)
     {
         selectedEnemy = enemy.GetComponent<EnemyBattleController>();
+    }
+
+    public void SetTrigger()
+    {
+        EventTrigger trigger;
+        EventTrigger.Entry entry;
+        foreach (GameObject e in Enemy.currentEnemyList) { 
+            trigger= e.GetComponent<EventTrigger>();
+            entry = new EventTrigger.Entry();
+            entry.eventID= EventTriggerType.PointerClick; ;
+            entry.callback.AddListener((data) => { SelectEnemy(e); } );
+            trigger.triggers.Add(entry);
+        }
     }
 }

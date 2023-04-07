@@ -4,6 +4,7 @@ using UnityEngine;
 using static CharacterBase;
 using UnityEngine.TextCore.Text;
 using Unity.VisualScripting;
+using UnityEngine.EventSystems;
 
 public class EnemyBattleController : EnemyBase
 {
