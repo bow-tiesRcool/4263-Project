@@ -17,8 +17,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D body2d;
     private Vector2[] orderlocation;
 
-    [HideInInspector]
-    public Vector2 levelStartPos = new Vector2(-16.5f, -2.5f);
+
+    //public Vector2 levelStartPos;
     public List<GameObject> order;
 
     public State state;
@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
         TBFC = GameObject.FindGameObjectWithTag("GameController").GetComponent<TBFController>();
         state = State.Idle;
         PositionChangeUI.SetActive(false);
-        orderlocation= new Vector2[] { new Vector2(0, 0), new Vector2(-1.5f, 0), new Vector2(-3, 0) };
+        orderlocation= new Vector2[] { new Vector2(0, -1.7f), new Vector2(-6f, -1.7f), new Vector2(-12, -1.7f) };
         transform.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
         body2d = GetComponent<Rigidbody2D>();
         order.Clear();
@@ -50,23 +50,37 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (state == State.Idle)
+        if (transform.position.x <= 74)
         {
-            if (Input.GetKey(KeyCode.D)){
-                state = State.Moving;
+            if (state == State.Idle)
+            {
+                if (Input.GetKey(KeyCode.D))
+                {
+                    state = State.Moving;
+                }
+                //else
+                //{
+                //    state = State.Idle;
+                //}
+            }
+            if (state == State.Moving && Input.GetKey(KeyCode.D))
+            {
+                body2d.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, 0);
+            }
+            else if (state != State.ChangePos && state != State.Fighting)
+            {
+                body2d.velocity = Vector2.zero;
+                state = State.Idle;
             }
             else
             {
-                state = State.Idle;
+                body2d.velocity = Vector2.zero;
             }
         }
-        if (state == State.Moving && Input.GetKey(KeyCode.D))
-        {
-            body2d.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, 0);
-        }
-        else 
+        else
         {
             body2d.velocity = Vector2.zero;
+            state = State.Idle;
         }
     }
 

@@ -11,7 +11,7 @@ public class SpawnController : MonoBehaviour
     private float spawnInterval = 1.0f;
 
     private EnemySetController Enemy;
-    private float spawnDistance = 3.5f;
+    private float spawnDistance = 10f;
 
 
     void Start()
@@ -42,7 +42,14 @@ public class SpawnController : MonoBehaviour
         {
             Player.state = PlayerController.State.ChangePos;
             Player.PositionChangeUI.SetActive(true);
-            Enemy.newSpawn( new Vector2(pos.x + spawnDistance, pos.y), Player.currentLevel);
+            if (Player.transform.position.x <= 65)
+            {
+                Enemy.newSpawn(new Vector2(pos.x + spawnDistance, pos.y - 2f), Player.currentLevel, false);
+            }
+            else
+            {
+                Enemy.newSpawn(new Vector2(pos.x + spawnDistance, pos.y - 2f), Player.currentLevel, true);
+            }
         }
     }
 }

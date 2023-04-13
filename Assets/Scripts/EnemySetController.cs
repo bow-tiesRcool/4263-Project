@@ -27,16 +27,22 @@ public class EnemySetController : MonoBehaviour
         
     }
 
-    public void newSpawn(Vector2 pos, int currentLevel)
+    public void newSpawn(Vector2 pos, int currentLevel, bool nearDoor)
     {
         EnemySet.transform.position = pos;
-        spawnCount = Random.Range(spawnAmountMin, spawnAmountMax + 1);
+        if (nearDoor) {
+            spawnCount = Random.Range(spawnAmountMin, spawnAmountMax -1);
+        }
+        else
+        {
+            spawnCount = Random.Range(spawnAmountMin, spawnAmountMax + 1);
+        }
         currentEnemyList.Clear();
         for (int i = 0; i < spawnCount; i++)
         {
             currentEnemyList.Add(Instantiate(enemyList[Random.Range(0, enemyList.Length)]));
             currentEnemyList[i].transform.parent = EnemySet.transform;
-            currentEnemyList[i].transform.localPosition = new Vector2(i * 1.5f, 0);
+            currentEnemyList[i].transform.localPosition = new Vector2(i * 8f, 0);
             currentEnemyList[i].GetComponent<EnemyBattleController>().SetLevel(currentLevel);
         }
     }
