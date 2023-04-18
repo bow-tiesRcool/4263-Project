@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ public class CharacterBase : MonoBehaviour
     private int baseDefense;
     private int energy;
     private int energyMax;
-    private int level;
+    public int level;
     public PlayerType playerType;
 
     public enum PlayerType
@@ -29,7 +30,7 @@ public class CharacterBase : MonoBehaviour
         level = 1;
         healthMax = 100;
         energyMax = 50;
-        baseAttack = 20;
+        baseAttack = 0;
         baseSpeed = 25;
         baseDefense = 25;
     }
@@ -37,6 +38,7 @@ public class CharacterBase : MonoBehaviour
 
     public void SetType(PlayerType playerType, int currentLevel)
     {
+        //Debug.Log("Current Level: " + currentLevel);
         if (currentLevel > 1) { level = currentLevel; }
         switch (playerType)
         {
@@ -80,7 +82,7 @@ public class CharacterBase : MonoBehaviour
         health = healthMax;
         energyMax += 50;
         energy = energyMax;
-        baseAttack += 20;
+        baseAttack += 5;
         baseSpeed += 25;
         baseDefense += 25;
 
@@ -121,6 +123,11 @@ public class CharacterBase : MonoBehaviour
     public int GetHealthAmount()
     {
         return health;
+    }
+
+    public int GetMaxHealthAmount()
+    {
+        return healthMax;
     }
 
     public void TakeDamage(int amount)

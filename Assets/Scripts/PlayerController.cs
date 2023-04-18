@@ -9,6 +9,10 @@ public class PlayerController : MonoBehaviour
     public GameObject sword;
     public GameObject bat;
     public GameObject hammer;
+    private GirlBattleController swordBC;
+    private GirlBattleController hammerBC;
+    private GirlBattleController batBC;
+
     public int currentLevel;
     public float speed;
     public GameObject PositionChangeUI;
@@ -34,6 +38,10 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        swordBC = sword.GetComponent<GirlBattleController>();
+        hammerBC = hammer.GetComponent<GirlBattleController>();
+        batBC = bat.GetComponent<GirlBattleController>();
+        load(currentLevel);
         TBFC = GameObject.FindGameObjectWithTag("GameController").GetComponent<TBFController>();
         state = State.Idle;
         PositionChangeUI.SetActive(false);
@@ -99,5 +107,19 @@ public class PlayerController : MonoBehaviour
     public void ClearOrder()
     {
         order.Clear();
+    }
+
+    public void load(int level)
+    {
+        swordBC.load(level);
+        batBC.load(level);
+        hammerBC.load(level);
+    }
+
+    public void changePosBuff(PosBuff posBuff)
+    {
+        swordBC.PositionBuff(posBuff);
+        batBC.PositionBuff(posBuff);
+        hammerBC.PositionBuff(posBuff);
     }
 }

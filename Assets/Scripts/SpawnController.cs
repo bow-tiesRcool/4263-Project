@@ -38,6 +38,7 @@ public class SpawnController : MonoBehaviour
 
     void spawnEnemy(Vector2 pos)
     {
+        //Debug.Log(Player.currentLevel);
         if(Random.Range(1,100) <= spawnChancePercent)
         {
             Player.state = PlayerController.State.ChangePos;

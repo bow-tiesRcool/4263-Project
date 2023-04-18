@@ -1,6 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
+
+public enum PosBuff
+{
+    SBH,
+    SHB,
+    HSB,
+    HBS,
+    BHS,
+    BSH
+}
+
+[System.Serializable]
+public struct StatsUI
+{
+    public GameObject statsUI;
+    public TextMeshProUGUI nameText;
+    public TextMeshProUGUI levelText;
+    public TextMeshProUGUI healthText;
+    public TextMeshProUGUI attackText;
+    public TextMeshProUGUI defenseText;
+    public TextMeshProUGUI speedText;
+}
 
 public class HUDcontroller : MonoBehaviour
 {
@@ -11,18 +35,13 @@ public class HUDcontroller : MonoBehaviour
         Player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void SBH()
     {
+        Player.changePosBuff(PosBuff.SBH);
         Player.ClearOrder();
-        Player.order.Add(Player.sword);
-        Player.order.Add(Player.bat);
         Player.order.Add(Player.hammer);
+        Player.order.Add(Player.bat);
+        Player.order.Add(Player.sword);
         Player.ChangePosition();
         Player.state = PlayerController.State.Fighting;
         Player.PositionChangeUI.SetActive(false);
@@ -31,10 +50,11 @@ public class HUDcontroller : MonoBehaviour
 
     public void SHB()
     {
+        Player.changePosBuff(PosBuff.SHB);
         Player.ClearOrder();
-        Player.order.Add(Player.sword);
-        Player.order.Add(Player.hammer);
         Player.order.Add(Player.bat);
+        Player.order.Add(Player.hammer);
+        Player.order.Add(Player.sword);
         Player.ChangePosition();
         Player.state = PlayerController.State.Fighting;
         Player.PositionChangeUI.SetActive(false);
@@ -43,10 +63,11 @@ public class HUDcontroller : MonoBehaviour
 
     public void HSB()
     {
+        Player.changePosBuff(PosBuff.HSB);
         Player.ClearOrder();
-        Player.order.Add(Player.hammer);
-        Player.order.Add(Player.sword);
         Player.order.Add(Player.bat);
+        Player.order.Add(Player.sword);
+        Player.order.Add(Player.hammer);
         Player.ChangePosition();
         Player.state = PlayerController.State.Fighting;
         Player.PositionChangeUI.SetActive(false);
@@ -55,10 +76,11 @@ public class HUDcontroller : MonoBehaviour
 
     public void HBS()
     {
+        Player.changePosBuff(PosBuff.HBS);
         Player.ClearOrder();
-        Player.order.Add(Player.hammer);
-        Player.order.Add(Player.bat);
         Player.order.Add(Player.sword);
+        Player.order.Add(Player.bat);
+        Player.order.Add(Player.hammer);
         Player.ChangePosition();
         Player.state = PlayerController.State.Fighting;
         Player.PositionChangeUI.SetActive(false);
@@ -67,10 +89,11 @@ public class HUDcontroller : MonoBehaviour
 
     public void BHS()
     {
+        Player.changePosBuff(PosBuff.BHS);
         Player.ClearOrder();
-        Player.order.Add(Player.bat);
-        Player.order.Add(Player.hammer);
         Player.order.Add(Player.sword);
+        Player.order.Add(Player.hammer);
+        Player.order.Add(Player.bat);
         Player.ChangePosition();
         Player.state = PlayerController.State.Fighting;
         Player.PositionChangeUI.SetActive(false);
@@ -79,10 +102,11 @@ public class HUDcontroller : MonoBehaviour
 
     public void BSH()
     {
+        Player.changePosBuff(PosBuff.BSH);
         Player.ClearOrder();
-        Player.order.Add(Player.bat);
-        Player.order.Add(Player.sword);
         Player.order.Add(Player.hammer);
+        Player.order.Add(Player.sword);
+        Player.order.Add(Player.bat);
         Player.ChangePosition();
         Player.state = PlayerController.State.Fighting;
         Player.PositionChangeUI.SetActive(false);

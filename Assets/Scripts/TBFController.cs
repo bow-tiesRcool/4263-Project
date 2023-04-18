@@ -1,98 +1,121 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static EnemyBase;
 
-public enum BattleState {Start, Choosing, PlayerTurn, EnemyTurn, Won, Lost }
+public enum BattleState {Start, Choosing, PlayerTurn, EnemyTurn, Busy, Done}
 
 public class TBFController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public PlayerController Player;
-    private EnemySetController Enemy;
-    public BattleObject mainGirl;
-    private BattleObject currentGirl;
-    public EnemyBattleController selectedEnemy;
+    public BattleState state;
+    public GameObject turnIndicator;
     public EventTrigger trigger;
     public EventTriggerType eventType;
-
+    public int enemies;
     public int totalObjects;
     public int turns;
-    public int playerTeamSpeed;
-    public int enemyTeamSpeed;
-    
     public List<BattleObject> orderList;
     public int currentIndex;
     public BattleObject currentTurn;
-    
-    private Button attackOne;
-    private Button attackTwo;
-    
-    public BattleState state;
 
+    public PlayerController Player;
+    public StatsUI playerUI;
+    public BattleObject mainGirl;
+    public BattleObject currentGirl;
+    public BattleObject selectedPlayer;
+    public int playerTeamSpeed;
+    private EnemySetController Enemy;
+    public StatsUI enemyUI;
+    public BattleObject selectedEnemy;
+    public int enemyTeamSpeed;
+    
     void Start()
     {
         Player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         Enemy = GameObject.FindGameObjectWithTag("EnemySet").GetComponent<EnemySetController>();
         orderList = new List<BattleObject>();
+        playerUI.statsUI.SetActive(false);
+        enemyUI.statsUI.SetActive(false);
+        turnIndicator.SetActive(false);
     }
 
     private void Update()
     {
         if (Player.state == PlayerController.State.Fighting)
         {
-            if(state == BattleState.Choosing || state == BattleState.Start || state == BattleState.EnemyTurn)
+            if(state == BattleState.Choosing)
             {
-                WhosTurn();
+                if (state != BattleState.Done)
+                {
+                    WhosTurn();
+                    UpdatePlayerStats();
+                }
             }
         }
     }
 
     public void NewTBFC()
     {
-        Debug.Log(Player.order.Count);
-        Debug.Log(Enemy.currentEnemyList.Count);
+        //Debug.Log(Enemy.currentEnemyList.Count);
+        enemies = Enemy.currentEnemyList.Count;
         orderList.Clear();
-        currentIndex = 0;
+        currentIndex = -1;
         playerTeamSpeed = GetTeamSpeed(Player.order, true);
         enemyTeamSpeed = GetTeamSpeed(Enemy.currentEnemyList, false);
         totalObjects = 3 + Enemy.currentEnemyList.Count;
         turns = totalObjects;
-        SetTrigger();
         CreateOrder();
+        SetTrigger();
         GetMainGirl();
+        playerUI.statsUI.SetActive(true);
+        enemyUI.statsUI.SetActive(true);
+        turnIndicator.SetActive(true);
+        turnIndicator.transform.parent = currentTurn.gameObject.transform;
+        turnIndicator.transform.localPosition = new Vector2(0, -7);
     }
 
     private void WhosTurn()
     {
-        Debug.Log("Current Index: " + currentIndex);
-        Debug.Log("Turns: " + turns);
-        if (currentIndex == turns) {
-            foreach (GameObject obj in Enemy.currentEnemyList) {
-                Destroy(obj);
-            }
-            currentGirl.girlBC.FightMenu.SetActive(false);
-            Player.state= PlayerController.State.Idle;
+        currentIndex++;
+        if (currentIndex >= totalObjects)
+        {
+            currentIndex = 0;
         }
+        //Debug.Log("Current Index: " + currentIndex);
+        //Debug.Log("Turns: " + turns);
+        //if (currentIndex == turns) {
+        //    foreach (GameObject obj in Enemy.currentEnemyList) {
+        //        Destroy(obj);
+        //    }
+        //    currentGirl.girlBC.FightMenu.SetActive(false);
+        //    Player.state= PlayerController.State.Idle;
+        //}
         currentTurn = orderList[currentIndex];
-        Debug.Log("Current Turn: " + currentTurn.gameObject);
+        turnIndicator.transform.parent = currentTurn.gameObject.transform;
+        turnIndicator.transform.localPosition = new Vector2(0, -7);
+        Debug.Log("CurrentTurn" + currentTurn);
+        //Debug.Log("Current Turn: " + currentTurn.gameObject);
         if (currentTurn.player)
         {
             state = BattleState.PlayerTurn;
-            currentGirl.girlBC.FightMenu.SetActive(false);
             currentGirl = currentTurn;
-            currentGirl.girlBC.FightMenu.SetActive(true);
         }
         else if (!currentTurn.player)
         {
             state = BattleState.EnemyTurn;
+            //Debug.Log(currentTurn.enemyBC.Attack((Random.Range(0, 1))));
+            //Move(currentTurn.gameObject, currentGirl.gameObject);
+            StartCoroutine(Move(currentTurn, mainGirl));
             mainGirl.girlBC.TakeDamage(currentTurn.enemyBC.Attack((Random.Range(0, 1))));
+            //Dead();
         }
-            currentIndex++;
-        Debug.Log("Current State: " + state);
+        //Debug.Log("Current State: " + state);
     }
 
     private void Lost()
@@ -105,15 +128,16 @@ public class TBFController : MonoBehaviour
         if (orderList[0].player)
         {
             mainGirl = orderList[0];
-            selectedEnemy = orderList[1].enemyBC;
+            selectedEnemy = orderList[1];
         }
         else
         {
-            selectedEnemy = orderList[0].enemyBC;
+            selectedEnemy = orderList[0];
             mainGirl = orderList[1];
         }
-        currentGirl = mainGirl;
-        state = BattleState.Start;
+        UpdateEnemyStats();
+        selectedPlayer = currentGirl = mainGirl;
+        state = BattleState.Choosing;
     }
 
     void CreateOrder()
@@ -192,6 +216,14 @@ public class TBFController : MonoBehaviour
 
     void Win()
     {
+        enemyUI.statsUI.SetActive(false);
+        playerUI.statsUI.SetActive(false);
+        turnIndicator.SetActive(false);
+        state = BattleState.Start;
+        foreach (GameObject obj in Enemy.currentEnemyList)
+        {
+            Destroy(obj);
+        }
         Player.state = PlayerController.State.Idle;
     }
 
@@ -207,46 +239,147 @@ public class TBFController : MonoBehaviour
 
     public void Attack1()
     {
-        Debug.Log("Attack1");
-        Debug.Log("Current State in Attack1: " + state);
+        //Debug.Log("Attack1");
+        //Debug.Log("Current State in Attack1: " + state);
         //state = BattleState.PlayerTurn;
-        if (state != BattleState.PlayerTurn) {
-            return;
+        //Debug.Log(currentGirl.girlBC.GetAttack());
+        if (Check())
+        {
+            StartCoroutine(Move(currentGirl, selectedEnemy));
+            selectedEnemy.enemyBC.takeDamage(currentGirl.girlBC.GetAttack());
         }
-        WhosTurn();
-        Debug.Log("Done Attack1");
+        //Move(currentGirl.gameObject, selectedEnemy.gameObject);
+        //Debug.Log("Done Attack1");
         return;
     }
 
     public void Attack2()
     {
-        Debug.Log("Attack2");
-        Debug.Log("Current State in Attack2: " + state);
+        //Debug.Log("Attack2");
+        //Debug.Log("Current State in Attack2: " + state);
         //state = BattleState.PlayerTurn;
-        if (state != BattleState.PlayerTurn)
+        //Debug.Log(currentGirl.girlBC.GetAttack());
+        if (Check())
         {
-            return;
+            StartCoroutine(Move(currentGirl, selectedEnemy));
+            selectedEnemy.enemyBC.takeDamage(currentGirl.girlBC.GetAttack());
         }
-        WhosTurn();
-        Debug.Log("Done Attack2");
+        //Debug.Log("Done Attack2");
         return;
     }
 
-    public void SelectEnemy(GameObject enemy)
+    public bool Check()
     {
-        selectedEnemy = enemy.GetComponent<EnemyBattleController>();
+        if (currentGirl != selectedPlayer)
+        {
+            return false;
+        }
+        if (state != BattleState.PlayerTurn)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public void Select(BattleObject battleObject)
+    {
+        if (battleObject.player)
+        {
+            //Debug.Log("Clicked on " + battleObject.gameObject.name);
+            selectedPlayer = battleObject;
+            UpdatePlayerStats();
+        }
+        else
+        {
+            selectedEnemy = battleObject;
+            UpdateEnemyStats();
+        }
+        //Debug.Log(enemy);
+    }
+
+    public void UpdateEnemyStats()
+    {
+        //Debug.Log(selectedEnemy.enemyBC.GetLevel());
+        enemyUI.nameText.text = selectedEnemy.enemyBC.enemyType.ToString();
+        enemyUI.levelText.text = "Level: " + selectedEnemy.enemyBC.GetLevel().ToString();
+        enemyUI.healthText.text = "Health: " + selectedEnemy.enemyBC.GetHealthAmount().ToString() + "/" + selectedEnemy.enemyBC.GetMaxHealthAmount().ToString();
+        enemyUI.attackText.text = "Attack: " + selectedEnemy.enemyBC.GetAttack().ToString();
+        enemyUI.defenseText.text = "Defense: " + selectedEnemy.enemyBC.GetDefense().ToString();
+        enemyUI.speedText.text = "Speed: " + selectedEnemy.enemyBC.GetSpeed().ToString();
+    }
+
+    public void UpdatePlayerStats()
+    {
+        playerUI.nameText.text = selectedPlayer.girlBC.playerType.ToString();
+        playerUI.levelText.text = "Level: " + selectedPlayer.girlBC.GetLevel().ToString();
+        playerUI.healthText.text = "Health: " + selectedPlayer.girlBC.GetHealthAmount().ToString() + "/" + currentGirl.girlBC.GetMaxHealthAmount().ToString();
+        playerUI.attackText.text = "Attack: " + selectedPlayer.girlBC.GetAttack().ToString();
+        playerUI.defenseText.text = "Defense: " + selectedPlayer.girlBC.GetDefense().ToString();
+        playerUI.speedText.text = "Speed: " + selectedPlayer.girlBC.GetSpeed().ToString();
     }
 
     public void SetTrigger()
     {
+        //Debug.Log("Setting Trigger");
         EventTrigger trigger;
         EventTrigger.Entry entry;
-        foreach (GameObject e in Enemy.currentEnemyList) { 
-            trigger= e.GetComponent<EventTrigger>();
+        foreach (BattleObject e in orderList) {
+            //Debug.Log(e);
+            trigger = e.gameObject.GetComponent<EventTrigger>();
             entry = new EventTrigger.Entry();
-            entry.eventID= EventTriggerType.PointerClick; ;
-            entry.callback.AddListener((data) => { SelectEnemy(e); } );
+            entry.eventID = EventTriggerType.PointerClick; ;
+            entry.callback.AddListener((data) => { Select(e); });
+            //Debug.Log(entry);
             trigger.triggers.Add(entry);
+            //Debug.Log(trigger);
         }
+    }
+
+    public void Dead()
+    {
+        if (selectedEnemy.enemyBC.IsDead())
+        {
+            enemies--;
+            if(enemies== 0)
+            {
+                Win();
+            }
+            totalObjects--;
+            turns--;
+            orderList.Remove(selectedEnemy);
+            selectedEnemy.gameObject.SetActive(false);
+            foreach (BattleObject e in orderList)
+            {
+                if (!e.player)
+                {
+                    selectedEnemy = e;
+                    break;
+                }
+            }
+            UpdateEnemyStats();
+        }
+        if(currentGirl.girlBC.IsDead())
+        {
+            Debug.Log("You lost");
+        }
+        state = BattleState.Done;
+    }
+
+    IEnumerator Move(BattleObject moving, BattleObject target)
+    {
+        if (!moving.player)
+        {
+            yield return new WaitForSeconds(1);
+        }
+        state = BattleState.Busy;
+        Vector2 start = moving.gameObject.transform.position;
+        Vector2 targetPos = target.gameObject.transform.position + (moving.gameObject.transform.position - target.gameObject.transform.position).normalized * 2f;
+        moving.gameObject.transform.position = targetPos;
+        yield return new WaitForSeconds(1);
+        moving.gameObject.transform.position = start;
+        UpdateEnemyStats();
+        Dead();
+        yield return new WaitForSeconds(1);
+        state = BattleState.Choosing;
     }
 }

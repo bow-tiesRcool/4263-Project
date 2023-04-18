@@ -43,7 +43,8 @@ public class EnemySetController : MonoBehaviour
             currentEnemyList.Add(Instantiate(enemyList[Random.Range(0, enemyList.Length)]));
             currentEnemyList[i].transform.parent = EnemySet.transform;
             currentEnemyList[i].transform.localPosition = new Vector2(i * 8f, 0);
-            currentEnemyList[i].GetComponent<EnemyBattleController>().SetLevel(currentLevel);
+            currentEnemyList[i].GetComponent<EnemyBattleController>().SetLevel(currentLevel + Random.Range(0, 2));
+            //Debug.Log(currentLevel + Random.Range(0, 2));
         }
     }
 }

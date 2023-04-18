@@ -11,7 +11,7 @@ public class EnemyBase : MonoBehaviour
     private int baseAttack;
     private int baseSpeed;
     private int baseDefense;
-    private int level;
+    public int level;
     public EnemyType enemyType;
     public State state;
 
@@ -63,7 +63,9 @@ public class EnemyBase : MonoBehaviour
 
     public void SetLevel (int currentLevel)
     {
-        if (currentLevel > level) { level = currentLevel; }
+        Debug.Log("Current Level passed: "+currentLevel);
+        if (currentLevel > 0) { level = currentLevel; }
+        Debug.Log("Level change: " + level);
         healthMax += (10 * level);
         health = healthMax;
         baseAttack += (5 * level);
@@ -79,6 +81,11 @@ public class EnemyBase : MonoBehaviour
     public int GetHealthAmount()
     {
         return health;
+    }
+
+    public int GetMaxHealthAmount()
+    {
+        return healthMax;
     }
 
     public void takeDamage(int amount)

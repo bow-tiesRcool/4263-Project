@@ -101,11 +101,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyType: 0
   state: 0
-  currentHealth: 0
-  currentAttack: 0
-  currentSpeed: 0
-  currentDefense: 0
-  currentLevel: 0
 --- !u!114 &-802735226718055228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,5 +138,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 8, y: 13}
   m_EdgeRadius: 0

@@ -99,13 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc0ff5fd97cc57b4f8553b71c44fbb34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyType: 1
+  enemyType: 2
   state: 0
-  currentHealth: 0
-  currentAttack: 0
-  currentSpeed: 0
-  currentDefense: 0
-  currentLevel: 0
 --- !u!114 &8669090234281641891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,5 +138,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 8, y: 13}
   m_EdgeRadius: 0
