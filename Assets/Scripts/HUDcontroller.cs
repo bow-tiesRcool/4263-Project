@@ -42,6 +42,7 @@ public class HUDcontroller : MonoBehaviour
         Player.order.Add(Player.hammer);
         Player.order.Add(Player.bat);
         Player.order.Add(Player.sword);
+        Player.orderlocation = new Vector2[] { new Vector2(4, Player.hammeryPos.y), new Vector2(-3.75f, Player.batyPos.y), new Vector2(-12, Player.swordyPos.y) };
         Player.ChangePosition();
         Player.state = PlayerController.State.Fighting;
         Player.PositionChangeUI.SetActive(false);
@@ -55,6 +56,7 @@ public class HUDcontroller : MonoBehaviour
         Player.order.Add(Player.bat);
         Player.order.Add(Player.hammer);
         Player.order.Add(Player.sword);
+        Player.orderlocation = new Vector2[] { new Vector2(4, Player.batyPos.y), new Vector2(-3.75f, Player.hammeryPos.y), new Vector2(-12, Player.swordyPos.y) };
         Player.ChangePosition();
         Player.state = PlayerController.State.Fighting;
         Player.PositionChangeUI.SetActive(false);
@@ -68,6 +70,7 @@ public class HUDcontroller : MonoBehaviour
         Player.order.Add(Player.bat);
         Player.order.Add(Player.sword);
         Player.order.Add(Player.hammer);
+        Player.orderlocation = new Vector2[] { new Vector2(4, Player.batyPos.y), new Vector2(-3.75f, Player.swordyPos.y), new Vector2(-12, Player.hammeryPos.y) };
         Player.ChangePosition();
         Player.state = PlayerController.State.Fighting;
         Player.PositionChangeUI.SetActive(false);
@@ -81,6 +84,7 @@ public class HUDcontroller : MonoBehaviour
         Player.order.Add(Player.sword);
         Player.order.Add(Player.bat);
         Player.order.Add(Player.hammer);
+        Player.orderlocation = new Vector2[] { new Vector2(4, Player.swordyPos.y), new Vector2(-3.75f, Player.batyPos.y), new Vector2(-12, Player.hammeryPos.y) };
         Player.ChangePosition();
         Player.state = PlayerController.State.Fighting;
         Player.PositionChangeUI.SetActive(false);
@@ -94,6 +98,7 @@ public class HUDcontroller : MonoBehaviour
         Player.order.Add(Player.sword);
         Player.order.Add(Player.hammer);
         Player.order.Add(Player.bat);
+        Player.orderlocation = new Vector2[] { new Vector2(4, Player.swordyPos.y), new Vector2(-3.75f, Player.hammeryPos.y), new Vector2(-12, Player.batyPos.y) };
         Player.ChangePosition();
         Player.state = PlayerController.State.Fighting;
         Player.PositionChangeUI.SetActive(false);
@@ -107,6 +112,7 @@ public class HUDcontroller : MonoBehaviour
         Player.order.Add(Player.hammer);
         Player.order.Add(Player.sword);
         Player.order.Add(Player.bat);
+        Player.orderlocation = new Vector2[] { new Vector2(4, Player.hammeryPos.y), new Vector2(-3.75f, Player.swordyPos.y), new Vector2(-12, Player.batyPos.y) };
         Player.ChangePosition();
         Player.state = PlayerController.State.Fighting;
         Player.PositionChangeUI.SetActive(false);

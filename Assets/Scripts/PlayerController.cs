@@ -7,8 +7,11 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public GameObject sword;
+    public Vector2 swordyPos;
     public GameObject bat;
+    public Vector2 batyPos;
     public GameObject hammer;
+    public Vector2 hammeryPos;
     private GirlBattleController swordBC;
     private GirlBattleController hammerBC;
     private GirlBattleController batBC;
@@ -19,7 +22,7 @@ public class PlayerController : MonoBehaviour
     public TBFController TBFC;
 
     private Rigidbody2D body2d;
-    private Vector2[] orderlocation;
+    public Vector2[] orderlocation;
 
 
     //public Vector2 levelStartPos;
@@ -39,19 +42,22 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         swordBC = sword.GetComponent<GirlBattleController>();
+        swordyPos.y = -2.7f;
         hammerBC = hammer.GetComponent<GirlBattleController>();
+        hammeryPos.y = -1.75f;
         batBC = bat.GetComponent<GirlBattleController>();
+        batyPos.y = -3f;
         load(currentLevel);
         TBFC = GameObject.FindGameObjectWithTag("GameController").GetComponent<TBFController>();
         state = State.Idle;
         PositionChangeUI.SetActive(false);
-        orderlocation= new Vector2[] { new Vector2(0, -1.7f), new Vector2(-6f, -1.7f), new Vector2(-12, -1.7f) };
         transform.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
         body2d = GetComponent<Rigidbody2D>();
         order.Clear();
         order.Add(sword);
         order.Add(bat); 
         order.Add(hammer);
+        orderlocation = new Vector2[] { new Vector2(4, swordyPos.y), new Vector2(-3.75f, batyPos.y), new Vector2(-12, hammeryPos.y) };
         ChangePosition();
     }
 

@@ -13,6 +13,8 @@ public class GirlBattleController : CharacterBase
     public int addDefense;
     public Button attackOne;
     public Button attackTwo;
+    public Sprite idle;
+    public Sprite AttackSprite;
 
     private void Awake()
     {

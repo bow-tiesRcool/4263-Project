@@ -11,7 +11,7 @@ public class SpawnController : MonoBehaviour
     private float spawnInterval = 1.0f;
 
     private EnemySetController Enemy;
-    private float spawnDistance = 10f;
+    private float spawnDistance = 15f;
 
 
     void Start()

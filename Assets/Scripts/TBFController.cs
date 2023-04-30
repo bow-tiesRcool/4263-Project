@@ -245,8 +245,10 @@ public class TBFController : MonoBehaviour
         //Debug.Log(currentGirl.girlBC.GetAttack());
         if (Check())
         {
+            currentGirl.gameObject.GetComponent<SpriteRenderer>().sprite = currentGirl.girlBC.AttackSprite;
             StartCoroutine(Move(currentGirl, selectedEnemy));
             selectedEnemy.enemyBC.takeDamage(currentGirl.girlBC.GetAttack());
+            //currentGirl.gameObject.GetComponent<SpriteRenderer>().sprite = currentGirl.girlBC.idle;
         }
         //Move(currentGirl.gameObject, selectedEnemy.gameObject);
         //Debug.Log("Done Attack1");
@@ -261,8 +263,10 @@ public class TBFController : MonoBehaviour
         //Debug.Log(currentGirl.girlBC.GetAttack());
         if (Check())
         {
+            currentGirl.gameObject.GetComponent<SpriteRenderer>().sprite = currentGirl.girlBC.AttackSprite;
             StartCoroutine(Move(currentGirl, selectedEnemy));
             selectedEnemy.enemyBC.takeDamage(currentGirl.girlBC.GetAttack());
+            //currentGirl.gameObject.GetComponent<SpriteRenderer>().sprite = currentGirl.girlBC.idle;
         }
         //Debug.Log("Done Attack2");
         return;
@@ -367,6 +371,7 @@ public class TBFController : MonoBehaviour
 
     IEnumerator Move(BattleObject moving, BattleObject target)
     {
+        SpriteRenderer sprite = target.gameObject.GetComponent<SpriteRenderer>();
         if (!moving.player)
         {
             yield return new WaitForSeconds(1);
@@ -375,11 +380,30 @@ public class TBFController : MonoBehaviour
         Vector2 start = moving.gameObject.transform.position;
         Vector2 targetPos = target.gameObject.transform.position + (moving.gameObject.transform.position - target.gameObject.transform.position).normalized * 2f;
         moving.gameObject.transform.position = targetPos;
-        yield return new WaitForSeconds(1);
+        for (int i = 0; i < 5; i++)
+        {
+            sprite.color = new Color(255, 0, 0, 255);
+            yield return new WaitForSeconds(.1f);
+            sprite.color = new Color(255, 255, 255, 255);
+            yield return new WaitForSeconds(.1f);
+        }
         moving.gameObject.transform.position = start;
+        currentGirl.gameObject.GetComponent<SpriteRenderer>().sprite = currentGirl.girlBC.idle;
         UpdateEnemyStats();
         Dead();
         yield return new WaitForSeconds(1);
         state = BattleState.Choosing;
+    }
+
+    IEnumerable Damage(BattleObject target)
+    {
+        SpriteRenderer sprite = target.gameObject.GetComponent<SpriteRenderer>();
+        for (int i = 0; i < 5; i++)
+        {
+            sprite.color = new Color(255, 0, 0, 255);
+            yield return new WaitForSeconds(.5f);
+            sprite.color = new Color(255, 255, 255, 255);
+        }
+        yield return new WaitForSeconds(1f);
     }
 }
