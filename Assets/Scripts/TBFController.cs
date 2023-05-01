@@ -71,13 +71,15 @@ public class TBFController : MonoBehaviour
         totalObjects = 3 + Enemy.currentEnemyList.Count;
         turns = totalObjects;
         CreateOrder();
+        Debug.Log("Setting Triggers");
         SetTrigger();
+        Debug.Log("Setting Triggers is done");
         GetMainGirl();
         playerUI.statsUI.SetActive(true);
         enemyUI.statsUI.SetActive(true);
         turnIndicator.SetActive(true);
-        turnIndicator.transform.parent = currentTurn.gameObject.transform;
-        turnIndicator.transform.localPosition = new Vector2(0, -7);
+        //turnIndicator.transform.parent = currentTurn.gameObject.transform;
+        //turnIndicator.transform.localPosition = new Vector2(0, -7);
     }
 
     private void WhosTurn()
@@ -99,7 +101,7 @@ public class TBFController : MonoBehaviour
         currentTurn = orderList[currentIndex];
         turnIndicator.transform.parent = currentTurn.gameObject.transform;
         turnIndicator.transform.localPosition = new Vector2(0, -7);
-        Debug.Log("CurrentTurn" + currentTurn);
+        //Debug.Log("CurrentTurn" + currentTurn);
         //Debug.Log("Current Turn: " + currentTurn.gameObject);
         if (currentTurn.player)
         {
@@ -287,6 +289,7 @@ public class TBFController : MonoBehaviour
 
     public void Select(BattleObject battleObject)
     {
+        Debug.Log("Selected" + battleObject);
         if (battleObject.player)
         {
             //Debug.Log("Clicked on " + battleObject.gameObject.name);
@@ -336,6 +339,7 @@ public class TBFController : MonoBehaviour
             //Debug.Log(entry);
             trigger.triggers.Add(entry);
             //Debug.Log(trigger);
+            Debug.Log(e.player);
         }
     }
 

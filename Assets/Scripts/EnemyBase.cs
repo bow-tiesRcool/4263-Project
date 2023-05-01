@@ -19,7 +19,8 @@ public class EnemyBase : MonoBehaviour
     {
         Regular,
         Armor,
-        Ice
+        Ice,
+        Boss
     }
 
     public enum State
@@ -55,6 +56,14 @@ public class EnemyBase : MonoBehaviour
                 baseAttack = 5;
                 baseSpeed = (3);
                 baseDefense = 5;
+                break;
+            case EnemyType.Boss:
+                this.enemyType = EnemyType.Boss;
+                healthMax = 20;
+                health = healthMax;
+                baseAttack = 10;
+                baseSpeed = (20);
+                baseDefense = 25;
                 break;
         }
         state = State.WaitingForPlayer;

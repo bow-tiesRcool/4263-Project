@@ -28,7 +28,7 @@ public class CharacterBase : MonoBehaviour
     public void Start()
     {
         level = 1;
-        healthMax = 100;
+        healthMax = 150;
         energyMax = 50;
         baseAttack = 0;
         baseSpeed = 25;

@@ -35,7 +35,10 @@ public class PlayerController : MonoBehaviour
         Idle,
         Moving,
         Fighting,
-        ChangePos
+        ChangePos,
+        Boss1, 
+        Boss2, 
+        Boss3
     }
 
     // Start is called before the first frame update
@@ -50,6 +53,7 @@ public class PlayerController : MonoBehaviour
         load(currentLevel);
         TBFC = GameObject.FindGameObjectWithTag("GameController").GetComponent<TBFController>();
         state = State.Idle;
+        //state = State.Boss1;
         PositionChangeUI.SetActive(false);
         transform.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
         body2d = GetComponent<Rigidbody2D>();
@@ -64,6 +68,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (transform.position.x <= 74)
         {
             if (state == State.Idle)

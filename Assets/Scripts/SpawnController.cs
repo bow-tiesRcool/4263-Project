@@ -24,6 +24,18 @@ public class SpawnController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Player.state == PlayerController.State.Boss1)
+        {
+            spawnBoss1(Player.GetPosition());
+        }
+        if (Player.state == PlayerController.State.Boss2)
+        {
+            spawnBoss2(Player.GetPosition());
+        }
+        if (Player.state == PlayerController.State.Boss3)
+        {
+            spawnBoss3(Player.GetPosition());
+        }
         if (Player.state == PlayerController.State.Moving)
         {
             spawnTime -= Time.deltaTime;
@@ -52,5 +64,24 @@ public class SpawnController : MonoBehaviour
                 Enemy.newSpawn(new Vector2(pos.x + spawnDistance, pos.y - 2f), Player.currentLevel, true);
             }
         }
+    }
+
+    void spawnBoss1(Vector2 pos)
+    {
+        Player.state = PlayerController.State.ChangePos;
+        Player.PositionChangeUI.SetActive(true);
+        Enemy.newBossSpawn(new Vector2(13, -8.73f), 10);
+    }
+    void spawnBoss2(Vector2 pos)
+    {
+        Player.state = PlayerController.State.ChangePos;
+        Player.PositionChangeUI.SetActive(true);
+        Enemy.newBossSpawn(new Vector2(pos.x + spawnDistance, pos.y - 2f), 20);
+    }
+    void spawnBoss3(Vector2 pos)
+    {
+        Player.state = PlayerController.State.ChangePos;
+        Player.PositionChangeUI.SetActive(true);
+        Enemy.newBossSpawn(new Vector2(pos.x + spawnDistance, pos.y - 2f), 30);
     }
 }
