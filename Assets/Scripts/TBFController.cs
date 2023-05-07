@@ -9,10 +9,11 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using static EnemyBase;
 
-public enum BattleState {Start, Choosing, PlayerTurn, EnemyTurn, Busy, Done}
+public enum BattleState {Start, Choosing, PlayerTurn, EnemyTurn, Busy, Done, Lose}
 
 public class TBFController : MonoBehaviour
 {
+    public GameManager GameManager;
     public BattleState state;
     public GameObject turnIndicator;
     public EventTrigger trigger;
@@ -122,7 +123,11 @@ public class TBFController : MonoBehaviour
 
     private void Lost()
     {
-        
+        enemyUI.statsUI.SetActive(false);
+        playerUI.statsUI.SetActive(false);
+        turnIndicator.SetActive(false);
+        state = BattleState.Lose;
+        GameManager.DeadUI.SetActive(true);
     }
 
     void GetMainGirl()
@@ -368,7 +373,7 @@ public class TBFController : MonoBehaviour
         }
         if(currentGirl.girlBC.IsDead())
         {
-            Debug.Log("You lost");
+            Lost();
         }
         state = BattleState.Done;
     }

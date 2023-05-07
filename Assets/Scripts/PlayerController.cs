@@ -47,12 +47,12 @@ public class PlayerController : MonoBehaviour
         swordBC = sword.GetComponent<GirlBattleController>();
         swordyPos.y = -2.7f;
         hammerBC = hammer.GetComponent<GirlBattleController>();
-        hammeryPos.y = -1.75f;
+        hammeryPos.y = -3f;
         batBC = bat.GetComponent<GirlBattleController>();
         batyPos.y = -3f;
         load(currentLevel);
         TBFC = GameObject.FindGameObjectWithTag("GameController").GetComponent<TBFController>();
-        state = State.Idle;
+        //state = State.Idle;
         //state = State.Boss1;
         PositionChangeUI.SetActive(false);
         transform.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
