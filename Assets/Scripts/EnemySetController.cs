@@ -41,7 +41,7 @@ public class EnemySetController : MonoBehaviour
         currentEnemyList.Clear();
         for (int i = 0; i < spawnCount; i++)
         {
-            currentEnemyList.Add(Instantiate(enemyList[Random.Range(0, enemyList.Length)]));
+            currentEnemyList.Add(Instantiate(enemyList[Random.Range(0, enemyList.Length-1)]));
             currentEnemyList[i].transform.parent = EnemySet.transform;
             currentEnemyList[i].transform.localPosition = new Vector2(i * 8f, 0);
             currentEnemyList[i].GetComponent<EnemyBattleController>().SetLevel(currentLevel + Random.Range(0, 2));
@@ -51,7 +51,8 @@ public class EnemySetController : MonoBehaviour
 
     public void newBossSpawn(Vector2 pos, int currentLevel)
     {
-        currentEnemyList.Add(Instantiate(enemyList[0]));
+        EnemySet.transform.position = pos;
+        currentEnemyList.Add(Instantiate(enemyList[3]));
         currentEnemyList[0].transform.parent = EnemySet.transform;
         currentEnemyList[0].transform.localPosition = new Vector2(0, 0);
         currentEnemyList[0].GetComponent<EnemyBattleController>().SetLevel(currentLevel);

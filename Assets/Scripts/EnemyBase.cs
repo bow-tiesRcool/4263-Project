@@ -12,6 +12,8 @@ public class EnemyBase : MonoBehaviour
     private int baseSpeed;
     private int baseDefense;
     public int level;
+    public int money;
+    public int exp;
     public EnemyType enemyType;
     public State state;
 
@@ -68,6 +70,8 @@ public class EnemyBase : MonoBehaviour
         }
         state = State.WaitingForPlayer;
         level = 1;
+        money = 5;
+        exp = 5;
     }
 
     public void SetLevel (int currentLevel)
@@ -80,6 +84,8 @@ public class EnemyBase : MonoBehaviour
         baseAttack += (5 * level);
         baseSpeed += (3 * level);
         baseDefense += (5 * level);
+        money += (5 * level);
+        exp += (5 * level);
     }
 
     public float GetHealthPercent()
@@ -120,4 +126,7 @@ public class EnemyBase : MonoBehaviour
             health = healthMax;
         }
     }
+
+    public int GetMoney() { return money; }
+    public int GetExp() { return money; }
 }

@@ -125,6 +125,11 @@ public class CharacterBase : MonoBehaviour
         return health;
     }
 
+    public void setHealth(int value)
+    {
+        health = value;
+    }
+
     public int GetMaxHealthAmount()
     {
         return healthMax;

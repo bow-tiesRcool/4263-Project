@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using static EnemyBase;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public enum BattleState {Start, Choosing, PlayerTurn, EnemyTurn, Busy, Done, Lose}
 
@@ -35,6 +36,8 @@ public class TBFController : MonoBehaviour
     public StatsUI enemyUI;
     public BattleObject selectedEnemy;
     public int enemyTeamSpeed;
+    public int reward;
+    public int exp;
     
     void Start()
     {
@@ -63,6 +66,8 @@ public class TBFController : MonoBehaviour
 
     public void NewTBFC()
     {
+        reward = 0;
+        exp = 0;
         //Debug.Log(Enemy.currentEnemyList.Count);
         enemies = Enemy.currentEnemyList.Count;
         orderList.Clear();
@@ -231,6 +236,8 @@ public class TBFController : MonoBehaviour
         {
             Destroy(obj);
         }
+        Player.money += reward;
+        Player.experiencePts += exp;
         Player.state = PlayerController.State.Idle;
     }
 
@@ -345,6 +352,18 @@ public class TBFController : MonoBehaviour
             trigger.triggers.Add(entry);
             //Debug.Log(trigger);
             Debug.Log(e.player);
+        }
+    }
+
+    public void Rewards()
+    {
+        foreach (BattleObject e in orderList)
+        {
+            if (!e.player)
+            {
+                reward += e.enemyBC.GetMoney();
+                exp += e.enemyBC.GetExp();
+            }
         }
     }
 

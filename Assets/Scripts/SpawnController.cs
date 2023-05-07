@@ -70,7 +70,8 @@ public class SpawnController : MonoBehaviour
     {
         Player.state = PlayerController.State.ChangePos;
         Player.PositionChangeUI.SetActive(true);
-        Enemy.newBossSpawn(new Vector2(13, -8.73f), 10);
+        //Enemy.newBossSpawn(new Vector2(pos.x + 13, pos.y -8.73f), 10);
+        Enemy.newBossSpawn(new Vector2(pos.x + 15, pos.y), 10);
     }
     void spawnBoss2(Vector2 pos)
     {
