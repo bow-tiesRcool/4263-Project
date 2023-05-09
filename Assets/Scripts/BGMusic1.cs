@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundManager : MonoBehaviour
+public class BGMusic1 : MonoBehaviour
 {
 
-    public static SoundManager soundManagerInstance;
+    public static BGMusic1 bgMusic1Instance;
 
     void Awake()
     {
         DontDestroyOnLoad(this);
 
-        if (soundManagerInstance == null) {
-            soundManagerInstance = this;
+        if (bgMusic1Instance == null) {
+            bgMusic1Instance = this;
 
         }
         else { 
