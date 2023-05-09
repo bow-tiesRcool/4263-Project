@@ -35,6 +35,9 @@ public class PlayerController : MonoBehaviour
     public List<GameObject> order;
 
     public State state;
+    public State prevState;
+
+    public bool inRoom;
 
     public int location;
     public Vector3 roomSpawn;
@@ -43,6 +46,7 @@ public class PlayerController : MonoBehaviour
     public enum State
     {
         //Menu,
+        Pause,
         Idle,
         Moving,
         Fighting,
@@ -182,6 +186,18 @@ public class PlayerController : MonoBehaviour
         mainCamera.SetActive(false);
         roomCamera.SetActive(true);
         transform.position = roomSpawn;
+        inRoom= true;
         state = State.Boss1;
+    }
+
+    public void RoomReturn()
+    {
+        transform.position = beforeRoom;
+        inRoom = false;
+    }
+
+    public void RoomChange()
+    {
+        transform.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
     }
 }

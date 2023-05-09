@@ -239,6 +239,11 @@ public class TBFController : MonoBehaviour
         Player.money += reward;
         Player.experiencePts += exp;
         Player.state = PlayerController.State.Idle;
+
+        if(Player.inRoom)
+        {
+            Player.RoomReturn();
+        }
     }
 
     IEnumerator sample()

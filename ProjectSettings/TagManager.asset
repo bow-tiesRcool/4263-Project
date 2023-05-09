@@ -7,6 +7,7 @@ TagManager:
   - EnemySet
   - TBFC
   - RoomSpawn
+  - RoomChange
   layers:
   - Default
   - TransparentFX
